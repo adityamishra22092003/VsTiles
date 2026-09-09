@@ -210,9 +210,11 @@ try{
   var calcSqFt = document.getElementById('calcSqFt');
   var calcSqFtVal = document.getElementById('calcSqFtVal');
   var calcTileSize = document.getElementById('calcTileSize');
+  var calcFinish = document.getElementById('calcFinish');
   var resBoxes = document.getElementById('resBoxes');
   var resPieces = document.getElementById('resPieces');
   var resTotalArea = document.getElementById('resTotalArea');
+  var resFinish = document.getElementById('resFinish');
   var resPriceEst = document.getElementById('resPriceEst');
   var calcWaBtn = document.getElementById('calcWaBtn');
 
@@ -226,6 +228,8 @@ try{
     var pcsPerBox = parseInt(selectedOpt.dataset.pcs) || 2;
     var tileName = selectedOpt.dataset.name || 'Tile';
 
+    var finishName = (calcFinish && calcFinish.options[calcFinish.selectedIndex]) ? calcFinish.options[calcFinish.selectedIndex].value : 'Mat Digital Carving';
+
     var boxes = Math.ceil(sqft / boxCoverageSqFt);
     var pieces = boxes * pcsPerBox;
 
@@ -236,11 +240,12 @@ try{
     if(resBoxes) resBoxes.textContent = boxes.toLocaleString('en-IN');
     if(resPieces) resPieces.textContent = pieces.toLocaleString('en-IN');
     if(resTotalArea) resTotalArea.textContent = sqft.toLocaleString('en-IN') + ' Sq. Ft';
+    if(resFinish) resFinish.textContent = finishName;
     if(resPriceEst) resPriceEst.textContent = '₹' + minPrice.toLocaleString('en-IN') + ' — ₹' + maxPrice.toLocaleString('en-IN');
 
     if(calcWaBtn){
       var waMsg = encodeURIComponent(
-        'Hi Tile Wale Bhaiya,\nI calculated my tile requirement:\n• Area: ' + sqft + ' Sq. Ft\n• Tile Size: ' + tileName + '\n• Boxes Needed: ' + boxes + ' Boxes (' + pieces + ' Pcs)\nPlease share sample catalogs & exact pricing.'
+        'Hi Tile Wale Bhaiya,\nI calculated my tile requirement:\n• Area: ' + sqft + ' Sq. Ft\n• Tile Size: ' + tileName + '\n• Surface Finish: ' + finishName + '\n• Boxes Needed: ' + boxes + ' Boxes (' + pieces + ' Pcs)\nPlease share sample catalogs & exact pricing.'
       );
       calcWaBtn.href = 'https://wa.me/916232798194?text=' + waMsg;
     }
@@ -248,6 +253,7 @@ try{
 
   if(calcSqFt) calcSqFt.addEventListener('input', calculateTileRequirements);
   if(calcTileSize) calcTileSize.addEventListener('change', calculateTileRequirements);
+  if(calcFinish) calcFinish.addEventListener('change', calculateTileRequirements);
 
   calculateTileRequirements();
 }catch(e){ /* non-critical */ }

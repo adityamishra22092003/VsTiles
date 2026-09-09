@@ -375,8 +375,23 @@
             <select id="calcTileSize" class="calc-select">
               <option value="16" data-pcs="2" data-boxcoverage="16" data-name="2 x 4 ft (600x1200mm)">2 x 4 ft (600x1200mm) — 16 Sq.Ft / Box (2 Pcs)</option>
               <option value="16" data-pcs="4" data-boxcoverage="16" data-name="2 x 2 ft (600x600mm)">2 x 2 ft (600x600mm) — 16 Sq.Ft / Box (4 Pcs)</option>
+              <option value="9" data-pcs="6" data-boxcoverage="9" data-name="12 x 18 in (300x450mm)">12 x 18 in (300x450mm) — 9 Sq.Ft / Box (6 Pcs)</option>
+              <option value="8.33" data-pcs="8" data-boxcoverage="8.33" data-name="10 x 15 in (250x375mm)">10 x 15 in (250x375mm) — 8.33 Sq.Ft / Box (8 Pcs)</option>
+              <option value="8.88" data-pcs="5" data-boxcoverage="8.88" data-name="16 x 16 in (400x400mm)">16 x 16 in (400x400mm) — 8.88 Sq.Ft / Box (5 Pcs)</option>
+              <option value="10" data-pcs="10" data-boxcoverage="10" data-name="12 x 12 in (300x300mm)">12 x 12 in (300x300mm) — 10 Sq.Ft / Box (10 Pcs)</option>
               <option value="27.5" data-pcs="2" data-boxcoverage="27.5" data-name="2.6 x 5.2 ft (800x1600mm)">2.6 x 5.2 ft (800x1600mm) — 27.5 Sq.Ft / Box (2 Pcs)</option>
               <option value="31" data-pcs="1" data-boxcoverage="31" data-name="4 x 8 ft Slab (1200x2400mm)">4 x 8 ft Slab (1200x2400mm) — 31 Sq.Ft / Slab (1 Pc)</option>
+            </select>
+          </div>
+
+          <div class="calc-group">
+            <label for="calcFinish">Select Surface / Finish Type</label>
+            <select id="calcFinish" class="calc-select">
+              <option value="Mat Digital Carving" selected>Mat Digital Carving (Specialty Texture)</option>
+              <option value="High Gloss Polished">High Gloss Polished Glaze</option>
+              <option value="Satin Smooth Matte">Satin Smooth Matte</option>
+              <option value="Punch Texture Wood">Punch Texture Wood Planks</option>
+              <option value="Full Body Granula">Full Body Granula Porcelain</option>
             </select>
           </div>
         </div>
@@ -402,6 +417,10 @@
               <div class="detail-item">
                 <span>Total Coverage:</span>
                 <strong id="resTotalArea">350 Sq. Ft</strong>
+              </div>
+              <div class="detail-item">
+                <span>Surface Finish:</span>
+                <strong id="resFinish">Mat Digital Carving</strong>
               </div>
               <div class="detail-item">
                 <span>Est. Price Range:</span>
