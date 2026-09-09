@@ -210,41 +210,37 @@ try{
   var calcSqFt = document.getElementById('calcSqFt');
   var calcSqFtVal = document.getElementById('calcSqFtVal');
   var calcTileSize = document.getElementById('calcTileSize');
-  var wastageBtns = document.querySelectorAll('.wastage-btn');
   var resBoxes = document.getElementById('resBoxes');
   var resPieces = document.getElementById('resPieces');
   var resTotalArea = document.getElementById('resTotalArea');
   var resPriceEst = document.getElementById('resPriceEst');
   var calcWaBtn = document.getElementById('calcWaBtn');
 
-  var currentWastagePct = 0.10; // default 10%
-
   function calculateTileRequirements(){
     if(!calcSqFt || !calcTileSize) return;
     var sqft = parseFloat(calcSqFt.value) || 350;
-    if(calcSqFtVal) calcSqFtVal.textContent = sqft + ' Sq. Ft';
+    if(calcSqFtVal) calcSqFtVal.textContent = sqft.toLocaleString('en-IN') + ' Sq. Ft';
 
     var selectedOpt = calcTileSize.options[calcTileSize.selectedIndex];
-    var tileSizeSqFt = parseFloat(selectedOpt.value) || 8;
+    var boxCoverageSqFt = parseFloat(selectedOpt.dataset.boxcoverage || selectedOpt.value) || 16;
     var pcsPerBox = parseInt(selectedOpt.dataset.pcs) || 2;
     var tileName = selectedOpt.dataset.name || 'Tile';
 
-    var grossSqFt = Math.ceil(sqft * (1 + currentWastagePct));
-    var boxes = Math.ceil(grossSqFt / tileSizeSqFt);
+    var boxes = Math.ceil(sqft / boxCoverageSqFt);
     var pieces = boxes * pcsPerBox;
 
-    // Price calculation estimate (approx ₹65 - ₹130 per sq ft average)
-    var minPrice = Math.round(grossSqFt * 60);
-    var maxPrice = Math.round(grossSqFt * 120);
+    // Price calculation estimate (approx ₹60 - ₹120 per sq ft average)
+    var minPrice = Math.round(sqft * 60);
+    var maxPrice = Math.round(sqft * 120);
 
     if(resBoxes) resBoxes.textContent = boxes.toLocaleString('en-IN');
     if(resPieces) resPieces.textContent = pieces.toLocaleString('en-IN');
-    if(resTotalArea) resTotalArea.textContent = grossSqFt.toLocaleString('en-IN') + ' Sq. Ft';
+    if(resTotalArea) resTotalArea.textContent = sqft.toLocaleString('en-IN') + ' Sq. Ft';
     if(resPriceEst) resPriceEst.textContent = '₹' + minPrice.toLocaleString('en-IN') + ' — ₹' + maxPrice.toLocaleString('en-IN');
 
     if(calcWaBtn){
       var waMsg = encodeURIComponent(
-        'Hi Tile Wale Bhaiya,\nI used your Tile Calculator for my space:\n• Coverage: ' + sqft + ' Sq. Ft\n• Tile Size: ' + tileName + '\n• Boxes Needed: ' + boxes + ' Boxes (' + pieces + ' Pcs)\n• Est Area (+Wastage): ' + grossSqFt + ' Sq. Ft\nPlease send me sample catalogs & exact pricing.'
+        'Hi Tile Wale Bhaiya,\nI calculated my tile requirement:\n• Area: ' + sqft + ' Sq. Ft\n• Tile Size: ' + tileName + '\n• Boxes Needed: ' + boxes + ' Boxes (' + pieces + ' Pcs)\nPlease share sample catalogs & exact pricing.'
       );
       calcWaBtn.href = 'https://wa.me/916232798194?text=' + waMsg;
     }
@@ -252,15 +248,6 @@ try{
 
   if(calcSqFt) calcSqFt.addEventListener('input', calculateTileRequirements);
   if(calcTileSize) calcTileSize.addEventListener('change', calculateTileRequirements);
-
-  wastageBtns.forEach(function(btn){
-    btn.addEventListener('click', function(){
-      wastageBtns.forEach(function(b){ b.classList.remove('active'); });
-      btn.classList.add('active');
-      currentWastagePct = parseFloat(btn.dataset.pct) || 0.10;
-      calculateTileRequirements();
-    });
-  });
 
   calculateTileRequirements();
 }catch(e){ /* non-critical */ }

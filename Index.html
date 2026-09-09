@@ -373,20 +373,11 @@
           <div class="calc-group">
             <label for="calcTileSize">Select Tile / Slab Size</label>
             <select id="calcTileSize" class="calc-select">
-              <option value="8" data-pcs="2" data-name="2 x 4 ft (600x1200mm)">2 x 4 ft (600x1200mm) — 16 Sq.Ft / Box (2 Pcs)</option>
-              <option value="4" data-pcs="4" data-name="2 x 2 ft (600x600mm)">2 x 2 ft (600x600mm) — 16 Sq.Ft / Box (4 Pcs)</option>
-              <option value="13.78" data-pcs="2" data-name="2.6 x 5.2 ft (800x1600mm)">2.6 x 5.2 ft (800x1600mm) — 27.5 Sq.Ft / Box</option>
-              <option value="31" data-pcs="1" data-name="4 x 8 ft Slab (1200x2400mm)">4 x 8 ft Slab (1200x2400mm) — 31 Sq.Ft / Slab</option>
+              <option value="16" data-pcs="2" data-boxcoverage="16" data-name="2 x 4 ft (600x1200mm)">2 x 4 ft (600x1200mm) — 16 Sq.Ft / Box (2 Pcs)</option>
+              <option value="16" data-pcs="4" data-boxcoverage="16" data-name="2 x 2 ft (600x600mm)">2 x 2 ft (600x600mm) — 16 Sq.Ft / Box (4 Pcs)</option>
+              <option value="27.5" data-pcs="2" data-boxcoverage="27.5" data-name="2.6 x 5.2 ft (800x1600mm)">2.6 x 5.2 ft (800x1600mm) — 27.5 Sq.Ft / Box (2 Pcs)</option>
+              <option value="31" data-pcs="1" data-boxcoverage="31" data-name="4 x 8 ft Slab (1200x2400mm)">4 x 8 ft Slab (1200x2400mm) — 31 Sq.Ft / Slab (1 Pc)</option>
             </select>
-          </div>
-
-          <div class="calc-group">
-            <label>Wastage &amp; Cutting Allowance</label>
-            <div class="calc-wastage-btns">
-              <button type="button" class="wastage-btn" data-pct="0.05">5%</button>
-              <button type="button" class="wastage-btn active" data-pct="0.10">10% (Recommended)</button>
-              <button type="button" class="wastage-btn" data-pct="0.15">15% (Diagonal)</button>
-            </div>
           </div>
         </div>
 
@@ -397,24 +388,24 @@
 
             <div class="res-row">
               <div class="res-metric">
-                <span class="res-num" id="resBoxes">25</span>
+                <span class="res-num" id="resBoxes">22</span>
                 <span class="res-label">Boxes Required</span>
               </div>
               <div class="res-divider"></div>
               <div class="res-metric">
-                <span class="res-num" id="resPieces">50</span>
+                <span class="res-num" id="resPieces">44</span>
                 <span class="res-label">Total Tiles</span>
               </div>
             </div>
 
             <div class="res-detail-box">
               <div class="detail-item">
-                <span>Net Area + Wastage:</span>
-                <strong id="resTotalArea">385 Sq. Ft</strong>
+                <span>Total Coverage:</span>
+                <strong id="resTotalArea">350 Sq. Ft</strong>
               </div>
               <div class="detail-item">
                 <span>Est. Price Range:</span>
-                <strong id="resPriceEst">₹23,100 — ₹46,200</strong>
+                <strong id="resPriceEst">₹21,000 — ₹42,000</strong>
               </div>
             </div>
 
