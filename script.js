@@ -215,6 +215,7 @@ try{
   var resPieces = document.getElementById('resPieces');
   var resTotalArea = document.getElementById('resTotalArea');
   var resFinish = document.getElementById('resFinish');
+  var resTier = document.getElementById('resTier');
   var resPriceEst = document.getElementById('resPriceEst');
   var calcWaBtn = document.getElementById('calcWaBtn');
 
@@ -227,25 +228,42 @@ try{
     var boxCoverageSqFt = parseFloat(selectedOpt.dataset.boxcoverage || selectedOpt.value) || 16;
     var pcsPerBox = parseInt(selectedOpt.dataset.pcs) || 2;
     var tileName = selectedOpt.dataset.name || 'Tile';
+    var baseMinRate = parseFloat(selectedOpt.dataset.minprice) || 50;
+    var baseMaxRate = parseFloat(selectedOpt.dataset.maxprice) || 90;
 
     var finishName = (calcFinish && calcFinish.options[calcFinish.selectedIndex]) ? calcFinish.options[calcFinish.selectedIndex].value : 'Mat Digital Carving';
 
     var boxes = Math.ceil(sqft / boxCoverageSqFt);
     var pieces = boxes * pcsPerBox;
 
-    // Price calculation estimate (approx ₹60 - ₹120 per sq ft average)
-    var minPrice = Math.round(sqft * 60);
-    var maxPrice = Math.round(sqft * 120);
+    // Quantity-dependent Volume Pricing Tiers:
+    // < 250 Sq.Ft  -> Standard Retail (1.0x)
+    // 250–999 Sq.Ft -> Semi-Bulk (0.88x / 12% Volume Discount)
+    // >= 1000 Sq.Ft -> Wholesale Project (0.78x / 22% Volume Discount)
+    var tierName = 'Retail Tier';
+    var tierMultiplier = 1.0;
+
+    if(sqft >= 1000){
+      tierName = 'Wholesale Project (22% Off)';
+      tierMultiplier = 0.78;
+    } else if(sqft >= 250){
+      tierName = 'Semi-Bulk (12% Off)';
+      tierMultiplier = 0.88;
+    }
+
+    var minPrice = Math.round(sqft * baseMinRate * tierMultiplier);
+    var maxPrice = Math.round(sqft * baseMaxRate * tierMultiplier);
 
     if(resBoxes) resBoxes.textContent = boxes.toLocaleString('en-IN');
     if(resPieces) resPieces.textContent = pieces.toLocaleString('en-IN');
     if(resTotalArea) resTotalArea.textContent = sqft.toLocaleString('en-IN') + ' Sq. Ft';
     if(resFinish) resFinish.textContent = finishName;
+    if(resTier) resTier.textContent = tierName;
     if(resPriceEst) resPriceEst.textContent = '₹' + minPrice.toLocaleString('en-IN') + ' — ₹' + maxPrice.toLocaleString('en-IN');
 
     if(calcWaBtn){
       var waMsg = encodeURIComponent(
-        'Hi Tile Wale Bhaiya,\nI calculated my tile requirement:\n• Area: ' + sqft + ' Sq. Ft\n• Tile Size: ' + tileName + '\n• Surface Finish: ' + finishName + '\n• Boxes Needed: ' + boxes + ' Boxes (' + pieces + ' Pcs)\nPlease share sample catalogs & exact pricing.'
+        'Hi Tile Wale Bhaiya,\nI calculated my tile requirement:\n• Area: ' + sqft + ' Sq. Ft (' + tierName + ')\n• Tile Size: ' + tileName + '\n• Surface Finish: ' + finishName + '\n• Boxes Needed: ' + boxes + ' Boxes (' + pieces + ' Pcs)\n• Est. Total Price: ₹' + minPrice.toLocaleString('en-IN') + ' — ₹' + maxPrice.toLocaleString('en-IN') + '\nPlease send me catalogs & final quotation.'
       );
       calcWaBtn.href = 'https://wa.me/916232798194?text=' + waMsg;
     }
