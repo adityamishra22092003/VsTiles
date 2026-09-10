@@ -64,6 +64,36 @@ try{
 }catch(e){ /* non-critical */ }
 
 /* ============================================
+   NEWSLETTER SIGNUP
+   ============================================ */
+try{
+  var newsletterInput = document.querySelector('.newsletter input');
+  var newsletterBtn = document.querySelector('.newsletter button');
+  if(newsletterInput && newsletterBtn){
+   function handleNewsletterSubmit(){
+     var email = (newsletterInput.value || '').trim();
+     if(!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+       newsletterInput.setAttribute('aria-invalid', 'true');
+       newsletterInput.placeholder = 'Please enter a valid email';
+       newsletterInput.focus();
+       return;
+     }
+
+     newsletterInput.setAttribute('aria-invalid', 'false');
+     newsletterBtn.textContent = 'Subscribed ✓';
+     newsletterBtn.disabled = true;
+     newsletterInput.value = '';
+     newsletterInput.placeholder = 'Thanks for subscribing';
+   }
+
+   newsletterBtn.addEventListener('click', handleNewsletterSubmit);
+   newsletterInput.addEventListener('keydown', function(e){
+     if(e.key === 'Enter') handleNewsletterSubmit();
+   });
+  }
+}catch(e){ /* non-critical */ }
+
+/* ============================================
    NAVBAR SCROLLED STATE
    ============================================ */
 try{
