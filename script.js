@@ -258,8 +258,7 @@ try{
     var boxCoverageSqFt = parseFloat(selectedOpt.dataset.boxcoverage || selectedOpt.value) || 16;
     var pcsPerBox = parseInt(selectedOpt.dataset.pcs) || 2;
     var tileName = selectedOpt.dataset.name || 'Tile';
-    var baseMinRate = parseFloat(selectedOpt.dataset.minprice) || 50;
-    var baseMaxRate = parseFloat(selectedOpt.dataset.maxprice) || 90;
+    var boxPrice = parseFloat(selectedOpt.dataset.boxprice) || 500;
 
     var finishName = (calcFinish && calcFinish.options[calcFinish.selectedIndex]) ? calcFinish.options[calcFinish.selectedIndex].value : 'Mat Digital Carving';
 
@@ -281,19 +280,19 @@ try{
       tierMultiplier = 0.88;
     }
 
-    var minPrice = Math.round(sqft * baseMinRate * tierMultiplier);
-    var maxPrice = Math.round(sqft * baseMaxRate * tierMultiplier);
+    var estimatedBoxPrice = Math.round(boxPrice * tierMultiplier);
+    var totalPrice = boxes * estimatedBoxPrice;
 
     if(resBoxes) resBoxes.textContent = boxes.toLocaleString('en-IN');
     if(resPieces) resPieces.textContent = pieces.toLocaleString('en-IN');
     if(resTotalArea) resTotalArea.textContent = sqft.toLocaleString('en-IN') + ' Sq. Ft';
     if(resFinish) resFinish.textContent = finishName;
     if(resTier) resTier.textContent = tierName;
-    if(resPriceEst) resPriceEst.textContent = '₹' + minPrice.toLocaleString('en-IN') + ' — ₹' + maxPrice.toLocaleString('en-IN');
+    if(resPriceEst) resPriceEst.textContent = '₹' + totalPrice.toLocaleString('en-IN') + ' (' + estimatedBoxPrice.toLocaleString('en-IN') + '/box)';
 
     if(calcWaBtn){
       var waMsg = encodeURIComponent(
-        'Hi Tile Wale Bhaiya,\nI calculated my tile requirement:\n• Area: ' + sqft + ' Sq. Ft (' + tierName + ')\n• Tile Size: ' + tileName + '\n• Surface Finish: ' + finishName + '\n• Boxes Needed: ' + boxes + ' Boxes (' + pieces + ' Pcs)\n• Est. Total Price: ₹' + minPrice.toLocaleString('en-IN') + ' — ₹' + maxPrice.toLocaleString('en-IN') + '\nPlease send me catalogs & final quotation.'
+        'Hi Tile Wale Bhaiya,\nI calculated my tile requirement:\n• Area: ' + sqft + ' Sq. Ft (' + tierName + ')\n• Tile Size: ' + tileName + '\n• Surface Finish: ' + finishName + '\n• Boxes Needed: ' + boxes + ' Boxes (' + pieces + ' Pcs)\n• Estimated Price: ₹' + estimatedBoxPrice.toLocaleString('en-IN') + ' per box\n• Estimated Total Price: ₹' + totalPrice.toLocaleString('en-IN') + '\nPlease send me catalogs & final quotation.'
       );
       calcWaBtn.href = 'https://wa.me/916232798194?text=' + waMsg;
     }
