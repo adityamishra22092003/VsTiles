@@ -265,34 +265,21 @@ try{
     var boxes = Math.ceil(sqft / boxCoverageSqFt);
     var pieces = boxes * pcsPerBox;
 
-    // Quantity-dependent Volume Pricing Tiers:
-    // < 250 Sq.Ft  -> Standard Retail (1.0x)
-    // 250–999 Sq.Ft -> Semi-Bulk (0.88x / 12% Volume Discount)
-    // >= 1000 Sq.Ft -> Wholesale Project (0.78x / 22% Volume Discount)
-    var tierName = 'Retail Tier';
-    var tierMultiplier = 1.0;
-
-    if(sqft >= 1000){
-      tierName = 'Wholesale Project (22% Off)';
-      tierMultiplier = 0.78;
-    } else if(sqft >= 250){
-      tierName = 'Semi-Bulk (12% Off)';
-      tierMultiplier = 0.88;
-    }
-
-    var estimatedBoxPrice = Math.round(boxPrice * tierMultiplier);
-    var totalPrice = boxes * estimatedBoxPrice;
+    var exactBoxPrice = Math.round(boxPrice);
+    var totalPrice = boxes * exactBoxPrice;
+    var lowerTotalPrice = Math.max(0, totalPrice - 500);
+    var upperTotalPrice = totalPrice + 500;
 
     if(resBoxes) resBoxes.textContent = boxes.toLocaleString('en-IN');
     if(resPieces) resPieces.textContent = pieces.toLocaleString('en-IN');
     if(resTotalArea) resTotalArea.textContent = sqft.toLocaleString('en-IN') + ' Sq. Ft';
     if(resFinish) resFinish.textContent = finishName;
-    if(resTier) resTier.textContent = tierName;
-    if(resPriceEst) resPriceEst.textContent = '₹' + totalPrice.toLocaleString('en-IN') + ' (' + estimatedBoxPrice.toLocaleString('en-IN') + '/box)';
+    if(resTier) resTier.textContent = '₹' + exactBoxPrice.toLocaleString('en-IN');
+    if(resPriceEst) resPriceEst.textContent = '₹' + lowerTotalPrice.toLocaleString('en-IN') + ' — ₹' + upperTotalPrice.toLocaleString('en-IN');
 
     if(calcWaBtn){
       var waMsg = encodeURIComponent(
-        'Hi Tile Wale Bhaiya,\nI calculated my tile requirement:\n• Area: ' + sqft + ' Sq. Ft (' + tierName + ')\n• Tile Size: ' + tileName + '\n• Surface Finish: ' + finishName + '\n• Boxes Needed: ' + boxes + ' Boxes (' + pieces + ' Pcs)\n• Estimated Price: ₹' + estimatedBoxPrice.toLocaleString('en-IN') + ' per box\n• Estimated Total Price: ₹' + totalPrice.toLocaleString('en-IN') + '\nPlease send me catalogs & final quotation.'
+        'Hi Tile Wale Bhaiya,\nI calculated my tile requirement:\n• Area: ' + sqft + ' Sq. Ft\n• Tile Size: ' + tileName + '\n• Surface Finish: ' + finishName + '\n• Boxes Needed: ' + boxes + ' Boxes (' + pieces + ' Pcs)\n• Exact Price: ₹' + exactBoxPrice.toLocaleString('en-IN') + ' per box\n• Estimated Total Price: ₹' + lowerTotalPrice.toLocaleString('en-IN') + ' — ₹' + upperTotalPrice.toLocaleString('en-IN') + '\nPlease send me catalogs & final quotation.'
       );
       calcWaBtn.href = 'https://wa.me/916232798194?text=' + waMsg;
     }
