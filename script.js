@@ -16,6 +16,24 @@ if(hasGSAP && hasScroll){
 }
 
 /* ============================================
+   TILE BREAK INTRO
+   ============================================ */
+try{
+  var tileLoader = document.getElementById('tileLoader');
+  if(tileLoader){
+    if(prefersReducedMotion){
+      tileLoader.classList.add('is-hidden');
+    }else{
+      window.setTimeout(function(){ tileLoader.classList.add('is-breaking'); }, 420);
+      window.setTimeout(function(){ tileLoader.classList.add('is-hidden'); }, 1450);
+    }
+  }
+}catch(e){
+  var fallbackLoader = document.getElementById('tileLoader');
+  if(fallbackLoader) fallbackLoader.classList.add('is-hidden');
+}
+
+/* ============================================
    IMAGE FALLBACKS
    Any broken/blocked image quietly becomes a
    dark tile instead of a broken-icon gap.
@@ -485,11 +503,13 @@ try{
 try{
   if(hasGSAP && !isCoarsePointer && !prefersReducedMotion){
     var heroContent = document.querySelector('.hero-content');
+    var heroVideo = document.querySelector('.hero-video');
     var heroImg = document.getElementById('heroImg');
     window.addEventListener('mousemove', function(e){
       var relX = (e.clientX / window.innerWidth - 0.5);
       var relY = (e.clientY / window.innerHeight - 0.5);
       if(heroContent) gsap.to(heroContent, { x: relX*18, y: relY*10, duration:1, ease:'power2.out', overwrite:'auto' });
+      if(heroVideo) gsap.to(heroVideo, { x: relX*-24, y: relY*-14, duration:1.4, ease:'power2.out', overwrite:'auto' });
       if(heroImg) gsap.to(heroImg, { x: relX*-24, y: relY*-14, duration:1.4, ease:'power2.out', overwrite:'auto' });
     });
   }
@@ -534,39 +554,6 @@ try{
       resizeCanvas(); initParticles(); animateParticles();
       window.addEventListener('resize', function(){ resizeCanvas(); initParticles(); });
     }
-  }
-}catch(e){ /* non-critical */ }
-
-/* ============================================
-   PROJECTS HORIZONTAL SCROLL WITH GSAP
-   ============================================ */
-try{
-  if(hasScroll && !prefersReducedMotion && !isCoarsePointer){
-    window.addEventListener('load', function(){
-      try{
-        var track = document.getElementById('horizTrack');
-        var wrap = document.querySelector('.horiz-wrap');
-        if(track && wrap){
-          var scrollAmount = track.scrollWidth - window.innerWidth;
-          if(scrollAmount > 0){
-            wrap.style.overflow = 'hidden';
-            gsap.to(track, {
-              x: -scrollAmount,
-              ease:'none',
-              scrollTrigger:{
-                trigger:'.projects-section',
-                start:'top top',
-                end: function(){ return '+=' + (scrollAmount+200); },
-                scrub:1,
-                pin:true,
-                invalidateOnRefresh:true
-              }
-            });
-          }
-        }
-        ScrollTrigger.refresh();
-      }catch(e){ /* fall back to native horizontal scroll */ }
-    });
   }
 }catch(e){ /* non-critical */ }
 
